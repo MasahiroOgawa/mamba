@@ -6,11 +6,12 @@ continuation of your text, as if completing a document from its training data
 (The Pile: web text, code, Wikipedia, academic papers, etc.).
 
 Usage:
-    LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 \
-        .venv/bin/python examples/predict_next_token.py [--model MODEL] [--genlen N]
+    python examples/predict_next_token.py [--model MODEL] [--genlen N] [--skip-examples]
 
 Models: state-spaces/mamba-130m (default), state-spaces/mamba-370m,
-        state-spaces/mamba-1.4b, state-spaces/mamba-2.8b
+        state-spaces/mamba-1.4b, state-spaces/mamba-2.8b,
+        state-spaces/mamba2-130m, state-spaces/mamba2-370m,
+        state-spaces/mamba2-1.3b, state-spaces/mamba2-2.7b
 """
 
 import argparse

@@ -5,8 +5,7 @@ Compares all three SSM generations on the same workload (same d_model,
 sequence length, batch size) measuring forward/backward speed and VRAM.
 
 Usage:
-    LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 \
-        .venv/bin/python benchmarks/benchmark_speed_mamba123.py
+    python benchmarks/benchmark_speed_mamba123.py
 """
 
 import gc
@@ -20,7 +19,7 @@ import torch
 matplotlib.rcParams.update({"font.size": 11, "figure.dpi": 150})
 
 GB = 1024**3
-OUTPUT_PATH = Path(__file__).parent / "test_results_rtx4080.png"
+OUTPUT_PATH = Path(__file__).parent / "speed_mamba123.png"
 
 # Common benchmark parameters
 D_MODEL = 768
@@ -147,9 +146,10 @@ def plot_results(results):
     w = 0.35
     fwd_vram = [results[n]["fwd_vram_gb"] for n in names]
     bwd_vram = [results[n]["bwd_vram_gb"] for n in names]
-    b1 = ax.bar([p - w / 2 for p in x_pos], fwd_vram, w, label="Forward", color="#4C78A8")
-    b2 = ax.bar([p + w / 2 for p in x_pos], bwd_vram, w, label="Fwd+Backward", color="#E45756")
-    ax.axhline(y=11.6, color="red", linestyle="--", alpha=0.4, label="VRAM limit (11.6 GB)")
+    ax.bar([p - w / 2 for p in x_pos], fwd_vram, w, label="Forward", color="#4C78A8")
+    ax.bar([p + w / 2 for p in x_pos], bwd_vram, w, label="Fwd+Backward", color="#E45756")
+    vram_total = torch.cuda.get_device_properties(0).total_memory / GB
+    ax.axhline(y=vram_total, color="red", linestyle="--", alpha=0.4, label=f"VRAM limit ({vram_total:.1f} GB)")
     ax.set_ylabel("GB")
     ax.set_title("Peak VRAM Usage")
     ax.set_xticks(list(x_pos))
