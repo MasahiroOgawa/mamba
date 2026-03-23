@@ -5,8 +5,7 @@ Loads pretrained Mamba models, generates tokens from a prompt, and
 measures end-to-end latency (prompt processing + token decoding).
 
 Usage:
-    LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 \
-        .venv/bin/python benchmarks/benchmark_text_generation_latency.py
+    python benchmarks/benchmark_text_generation_latency.py
 """
 
 import argparse
